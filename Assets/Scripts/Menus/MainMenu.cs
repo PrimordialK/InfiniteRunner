@@ -6,6 +6,7 @@ public class MainMenu : BaseMenu
 {
     public Button playButton;
     public Button settingsButton;
+    public Button creditsButton;
     public Button quitButton;
 
 
@@ -14,7 +15,7 @@ public class MainMenu : BaseMenu
         base.Init(currentContext);
         state = MenuStates.MainMenu;
 
-        
+        if (creditsButton) creditsButton.onClick.AddListener(() => JumpTo(MenuStates.Credits));
         if (settingsButton) settingsButton.onClick.AddListener(() => JumpTo(MenuStates.Settings));
         if (quitButton) quitButton.onClick.AddListener(() => QuitGame());
 

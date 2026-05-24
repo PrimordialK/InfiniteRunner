@@ -8,6 +8,7 @@ public enum MenuStates // Enum to represent different menu states in the game, a
     Pause,
     Audio,
     Controls,
+    Credits,
     WinScreen,
 } 
 

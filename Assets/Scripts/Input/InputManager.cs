@@ -4,15 +4,15 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
 
-    //Public facing events and methods for other scripts to subscribe to or call
     public event System.Action OnTouchBegin;
     public event System.Action OnTouchEnd;
     public event System.Action<Vector3> OnPhoneTilt;
+
     public Vector2 GetTouchScreenPosition() => input.Gameplay.PrimaryPosition.ReadValue<Vector2>();
+
     public Vector3 GetTouchWorldPosition(Camera mainCamera)
     {
         if (mainCamera == null) mainCamera = Camera.main;
-
 
         Vector2 screenPos = GetTouchScreenPosition();
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, mainCamera.nearClipPlane));
@@ -20,10 +20,8 @@ public class InputManager : MonoBehaviour
         return worldPos;
     }
 
-
     private PlayerControls input;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         if (Instance == null)
@@ -38,7 +36,6 @@ public class InputManager : MonoBehaviour
 
         input = new PlayerControls();
     }
-
 
     private void OnEnable()
     {

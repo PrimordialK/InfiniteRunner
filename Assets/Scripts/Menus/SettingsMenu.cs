@@ -6,7 +6,7 @@ public class SettingsMenu : BaseMenu
     #region Buttons
     public Button backButton;
     public Button audioButton;
-    public Button controls;
+    public Button controlsButton;
     #endregion
     public override void Init(MenuController currentContext)
     {
@@ -15,7 +15,7 @@ public class SettingsMenu : BaseMenu
 
         if (backButton) backButton.onClick.AddListener(() => JumpBack());
         if (audioButton) audioButton.onClick.AddListener(() => JumpTo(MenuStates.Audio));
-        if (controls) controls.onClick.AddListener(() => JumpTo(MenuStates.Controls));
+        if (controlsButton) controlsButton.onClick.AddListener(() => JumpTo(MenuStates.Controls));
 
 
     }
