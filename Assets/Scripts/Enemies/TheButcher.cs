@@ -1,31 +1,37 @@
 using UnityEngine;
-using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class TheButcher : Enemy
 {
+    [SerializeField] private int victorySceneIndex = 3;
+
     private Transform playerTransform;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     protected override void Start()
     {
         base.Start();
-        rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
 
-        // Find the player by tag (make sure your player is tagged "Player")
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
             playerTransform = player.transform;
-
-       
-
+        else
+            Debug.LogWarning("TheButcher: No GameObject found with tag 'Player'.");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (playerTransform == null)
-            return;
+        if (playerTransform == null) return;
+
+        // Face the player — hitbox flips automatically as a child
+        float direction = playerTransform.position.x - transform.position.x;
+        FaceDirection(direction);
+        ChasePlayer(playerTransform);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.LoadScene(victorySceneIndex);
     }
 }

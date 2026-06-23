@@ -10,6 +10,7 @@ public enum MenuStates // Enum to represent different menu states in the game, a
     Controls,
     Credits,
     WinScreen,
+    GameOver
 } 
 
 public class BaseMenu : MonoBehaviour

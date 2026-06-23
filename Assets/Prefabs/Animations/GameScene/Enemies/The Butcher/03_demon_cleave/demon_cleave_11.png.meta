@@ -130,8 +130,8 @@ TextureImporter:
         y: 2
         width: 156
         height: 102
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.84, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -140,28 +140,6 @@ TextureImporter:
       bones: []
       spriteID: 18100b2caae7686478bb5bf4d7efb9a8
       internalID: 534887473
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: demon_cleave_11_3
-      rect:
-        serializedVersion: 2
-        x: 22
-        y: 10
-        width: 6
-        height: 4
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 22df5bd3bcf8e90468699038956282c1
-      internalID: 230118054
       vertices: []
       indices: 
       edges: []

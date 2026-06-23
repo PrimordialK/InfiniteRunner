@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(Collider2D))]
@@ -11,11 +12,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.02f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private GestureDetector gestureDetector;
+
+    [Header("Health")]
+    [SerializeField] private HealthBarUI healthBar;
+    public float Health, MaxHealth;
+
     #endregion
 
-    #region AudioClips
-    private AudioClip jumpSound;
-    private AudioClip currentJumpSound;
+    #region SerializedAudioClips
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip currentJumpSound;
+    [SerializeField] private AudioClip attackSound1;
+    [SerializeField] private AudioClip attackSound2;
     #endregion
 
     #region Components
@@ -32,6 +40,9 @@ public class PlayerController : MonoBehaviour
     private float initialGroundCheckRadius;
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private float moveSpeed = 5f;
+    private float soundDelay = 1.0f;
+
+
     #endregion
 
     #region Combat
@@ -42,6 +53,30 @@ public class PlayerController : MonoBehaviour
     private float lastAttackTime = -999f;
     #endregion
 
+    #region Health 
+    public void SetHealth(float healthChange) // Applies a health change (positive = heal, negative = damage)
+    {
+        Health += healthChange;
+        Health = Mathf.Clamp(Health, 0, MaxHealth);
+        healthBar.SetHealth(Health);
+    }
+
+    public void TakeDamage(int amount) // Reduces health by amount, triggers death at zero
+    {
+        SetHealth(-amount);
+        Debug.Log($"Player took {amount} damage. Health: {Health}/{MaxHealth}");
+
+        if (Health <= 0)
+            Die();
+    }
+
+    private void Die() // Loads the Game Over scene on death
+    {
+        Debug.Log("Player has died!");
+        SceneManager.LoadScene(2);
+    }
+    #endregion
+
     [SerializeField] private InputActionReference moveAction;
 
     void Start()
@@ -50,6 +85,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
+        audioSource = GetComponent<AudioSource>();
+        Health = MaxHealth;
 
         if (groundLayer == 0)
             Debug.LogError("Ground layer not set. Please set the Ground layer in the LayerMask.");
@@ -96,6 +133,8 @@ public class PlayerController : MonoBehaviour
         {
             // Player tapped again during Attack1 — queue the combo
             comboQueued = true;
+            audioSource.clip = attackSound1;
+            audioSource.Play();
         }
         else if (!currentState.IsName("Player_Attack_2"))
         {
@@ -103,6 +142,8 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Attack1");
             lastAttackTime = Time.time;
             comboQueued = false;
+            audioSource.Stop();
+            audioSource?.PlayOneShot(attackSound2);
         }
     }
 
